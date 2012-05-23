@@ -1,0 +1,12 @@
+{% extends "pghmarks/base.html" %}
+
+{% block content %}
+<h1>Pittsburgh Landmark: {{ object.name }}</h1>
+
+<dl>
+  <dt>Height</dt><dd>{{ object.height }}</dd>
+  <dt>Neighborhood</dt><dd>{{ object.neighborhood.name }}</dd>
+</dl>
+
+<p><a href="{% url landmark_list %}">Back to Landmarks List</a></p>
+{% endblock %}

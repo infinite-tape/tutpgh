@@ -1,0 +1,12 @@
+{% extends "pghmarks/base.html" %}
+
+{% block content %}
+<h1>Create a new Landmark</h1>
+
+<form method="post" action="{% url landmark_create %}">
+{% csrf_token %}
+{{ form.errors }}
+{{ form.as_p }}
+<input type="submit" value="Save">
+</form>
+{% endblock %}
