@@ -1,7 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
 from pghmarks.models import Landmark
-# For Advanced Section
 from django.views.generic.list import ListView
 
 
@@ -9,7 +8,8 @@ def hello_world(request):
     '''
     If we were to hit this view with a web browser we would not
     see html content, instead the server would return a single text
-    string "Hello, Pittsburgh!". In reality, this should be written as:
+    string "Hello, Pittsburgh!". In truth, this should specify
+    the return content MIME type, written as:
 
     return HttpResponse("Hello, Pittsburgh!", mimetype="text/plain")
     '''
@@ -30,9 +30,9 @@ def landmark_list(request):
 def landmark_detail(request, slug=None):
     '''
     Query the database using the Django ORM and return a single
-    Landmark object per the given `slug`. Pass this object to the
-    template for rendering into HTML and sending back to the
-    browser.
+    Landmark object per the given `slug`. The slug value is provided
+    from the URL path. Pass this object to the template for rendering
+    into HTML and sending back to the browser.
     '''
     try:
         object = Landmark.objects.get(slug=slug)
@@ -42,7 +42,14 @@ def landmark_detail(request, slug=None):
                               {'object': object})
 
 class LandmarkListView(ListView):
-    def get_context_data(self, *args, **kwargs):
-        context = super(LandmarkListView, self).get_context_data(*args, **kwargs)
+    '''
+    Class-based list view. Inherit Django's provided ListView class
+    and override the get_context_data() method to add extra, custom
+    context information for the template. Here we're adding a single
+    context variable called `landmark_count` that is a count of the
+    number of landmarks.
+    '''
+    def get_context_data(self, **kwargs):
+        context = super(LandmarkListView, self).get_context_data(**kwargs)
         context['landmark_count'] = Landmark.objects.count()
         return context
